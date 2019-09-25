@@ -8,7 +8,7 @@ import androidx.viewbinding.ViewBinding
  * Created by Kort on 2019/9/25.
  */
 abstract class BaseAdapter<T, VH : BaseViewHolder<T>> : RecyclerView.Adapter<VH>() {
-    open val currentList: MutableList<T> = emptyList<T>().toMutableList()
+    open var currentList: MutableList<T> = emptyList<T>().toMutableList()
     override fun getItemCount(): Int = currentList.size
     open fun getItem(position: Int) = currentList[position]
     @CallSuper
