@@ -20,9 +20,6 @@ fun Context.obtainStyleAndRecycle(
     }
 }
 
-@Target(AnnotationTarget.PROPERTY_GETTER)
-@Deprecated(private_get_message, level = DeprecationLevel.ERROR)
-annotation class PrivateGet
-
 const val private_get_message = "There is the private getter"
 fun privateGet(): Nothing = throw Exception(private_get_message)
+
