@@ -1,5 +1,8 @@
 package kort.tool.toolbox.livedata
 
+import androidx.annotation.MainThread
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 
 /**
@@ -40,4 +43,14 @@ class EventObserver<T>(private val onEventUnhandledContent: (T) -> Unit) : Obser
             onEventUnhandledContent(value)
         }
     }
+}
+
+@MainThread
+inline fun <T> LiveData<Event<T>>.eventObserve(
+    owner: LifecycleOwner,
+    crossinline onChanged: (T) -> Unit
+): EventObserver<T> {
+    val wrappedObserver = EventObserver<T> { onChanged(it) }
+    observe(owner, wrappedObserver)
+    return wrappedObserver
 }
