@@ -20,6 +20,18 @@ sealed class DataStatus<T> {
         is Success -> TaskStatus.Success
         is Failure -> TaskStatus.Failure(exception)
     }
+
+
+    inline fun <A, R> combine(
+        dataStatus: DataStatus<A>,
+        action: (T, A) -> R
+    ): DataStatus<R> = when (dataStatus) {
+        is Success -> {
+            map { action(it, dataStatus.result) }
+        }
+        is Failure -> Failure(dataStatus.exception)
+        is Loading -> Loading()
+    }
 }
 
 sealed class TaskStatus {
