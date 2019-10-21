@@ -32,6 +32,12 @@ sealed class DataStatus<T> {
         is Failure -> Failure(dataStatus.exception)
         is Loading -> Loading()
     }
+
+    inline fun isSuccess(block: (T) -> Unit) {
+        if(this is Success){
+            block(result)
+        }
+    }
 }
 
 sealed class TaskStatus {
