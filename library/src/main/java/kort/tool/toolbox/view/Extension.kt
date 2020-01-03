@@ -5,6 +5,7 @@ import android.content.res.TypedArray
 import android.util.AttributeSet
 import android.util.TypedValue
 import java.lang.Exception
+import java.lang.reflect.TypeVariable
 
 /**
  * Created by Kort on 2019/9/18.

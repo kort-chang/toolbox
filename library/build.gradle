@@ -44,7 +44,7 @@ dependencies {
     implementation 'org.glassfish:javax.annotation:10.0-b28'
 
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.0-M2'
-    testImplementation 'com.github.KortChang:android-unit-test-extension:0045ddd4fc'
+    testImplementation 'com.github.KortChang:android-unit-test-extension:1.0.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.5.2'
 }
