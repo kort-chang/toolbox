@@ -1,6 +1,5 @@
 package kort.tool.toolbox
 
-import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
@@ -10,12 +9,11 @@ import kotlinx.coroutines.flow.flow
  * Created by Kort on 2020/1/4.
  */
 
-@InternalCoroutinesApi
 fun <T> Flow<T>.throttleFist(windowDuration: Long = 500): Flow<T> = flow {
-    var windowStartTime = java.lang.System.currentTimeMillis()
+    var windowStartTime = System.currentTimeMillis()
     var emitted = false
     collect { value ->
-        val currentTime = java.lang.System.currentTimeMillis()
+        val currentTime = System.currentTimeMillis()
         val delta = currentTime - windowStartTime
         if (delta >= windowDuration) {
             // if delta is 600,
