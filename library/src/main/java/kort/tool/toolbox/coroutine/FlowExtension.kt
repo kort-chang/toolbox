@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.flow
  * Created by Kort on 2020/1/4.
  */
 
-fun <T> Flow<T>.throttleFist(windowDuration: Long = 500): Flow<T> = flow {
+fun <T> Flow<T>.throttleFirst(windowDuration: Long = 500): Flow<T> = flow {
     var windowStartTime = System.currentTimeMillis()
     var emitted = false
     collect { value ->
