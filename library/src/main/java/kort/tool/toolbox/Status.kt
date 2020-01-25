@@ -3,6 +3,39 @@ package kort.tool.toolbox
 /**
  * Created by Kort on 2019/10/21.
  */
+@Suppress("UNCHECKED_CAST")
+sealed class Status<T> {
+    class Loading<T> : Status<T>()
+    data class Success<T>(val result: T) : Status<T>()
+    data class Failure<T>(val exception: Exception) : Status<T>()
+    class Cancel<T> : Status<T>()
+
+    inline fun <R> flatMap(action: (T) -> Status<R>): Status<R> = when (this) {
+        is Loading<*> -> this as Status<R>
+        is Success<T> -> action(result)
+        is Failure<T> -> this as Failure<R>
+        is Cancel<*> -> this as Cancel<R>
+    }
+
+    inline fun <R> map(action: (result: T) -> R): Status<R> = flatMap { Success(action(it)) }
+
+    inline fun isSuccess(block: (T) -> Any?) =
+        if (this is Success) block(result) else null
+
+    inline fun <A, R> combine(
+        otherStatus: Status<A>,
+        action: (T, A) -> R
+    ): Status<R> = when (otherStatus) {
+        is Success -> {
+            map { action(it, otherStatus.result) }
+        }
+        is Failure -> Failure(otherStatus.exception)
+        is Loading -> Loading()
+        is Cancel -> Cancel()
+    }
+}
+
+
 sealed class DataStatus<T> {
     class Loading<T> : DataStatus<T>()
     data class Success<T>(var result: T) : DataStatus<T>()
@@ -20,8 +53,7 @@ sealed class DataStatus<T> {
         is Success -> TaskStatus.Success
         is Failure -> TaskStatus.Failure(exception)
     }
-
-
+    
     inline fun <A, R> combine(
         dataStatus: DataStatus<A>,
         action: (T, A) -> R
@@ -34,7 +66,7 @@ sealed class DataStatus<T> {
     }
 
     inline fun isSuccess(block: (T) -> Unit) {
-        if(this is Success){
+        if (this is Success) {
             block(result)
         }
     }
