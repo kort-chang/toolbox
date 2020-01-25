@@ -19,8 +19,9 @@ sealed class Status<T> {
 
     inline fun <R> map(action: (result: T) -> R): Status<R> = flatMap { Success(action(it)) }
 
-    inline fun isSuccess(block: (T) -> Any?) =
-        if (this is Success) block(result) else null
+    inline fun isSuccess(block: (T) -> Unit) {
+        if (this is Success) block(result)
+    }
 
     inline fun <A, R> combine(
         otherStatus: Status<A>,
@@ -53,7 +54,7 @@ sealed class DataStatus<T> {
         is Success -> TaskStatus.Success
         is Failure -> TaskStatus.Failure(exception)
     }
-    
+
     inline fun <A, R> combine(
         dataStatus: DataStatus<A>,
         action: (T, A) -> R
